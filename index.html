@@ -36,6 +36,15 @@
     <script src="dist/swagger-ui-bundle.js" charset="UTF-8"> </script>
     <script src="dist/swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
     <script>
+    function HideTopbarPlugin() {
+      // this plugin overrides the Topbar component to return nothing
+      return {
+        components: {
+          Topbar: function() { return null }
+        }
+      }
+    }
+
     window.onload = function() {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
