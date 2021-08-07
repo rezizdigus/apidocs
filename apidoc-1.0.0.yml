@@ -1,0 +1,268 @@
+openapi: 3.0.0
+info:
+  description: "Rez's API endpoints. -- Current endpoint version is v1"
+  version: v1
+  title: Zdigus API
+  termsOfService: https://api.zdigus.net/documents/tos
+tags:
+  - name: Genshin Impact
+    description: Unofficial Genshin Impact endpoints for various uses.
+servers:
+  - url: https://api.zdigus.net
+paths:
+  "/genshinimpact/{version}/banners/{bannerId}/full":
+    get:
+      tags:
+        - Genshin Impact
+      summary: Returns a banner manifest
+      description: Returns a full banner manifest in JSON
+      operationId: GIgetBanner
+      parameters:
+        - name: version
+          in: path
+          description: Endpoint version
+          required: true
+          schema:
+            type: string
+        - name: bannerId
+          in: path
+          description: A banner ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Request processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GIbannerManifest"
+        "400":
+          description: Invalid request | Various reasons
+        "404":
+          description: Requested content does not exist
+  "/genshinimpact/{version}/banners/info":
+    get:
+      tags:
+        - Genshin Impact
+      summary: Banner endpoints informations
+      description: Contans vartious informations about banners, like their endpoints and more.
+      operationId: GIgetBannerInfo
+      parameters:
+        - name: version
+          in: path
+          description: Endpoint version
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Request processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GIbannersInfoManifest"
+        "400":
+          description: Invalid request | Various reasons
+        "404":
+          description: Requested content does not exist
+  "/genshinimpact/{version}/banners/versions":
+    get:
+      tags:
+        - Genshin Impact
+      summary: Genshin Impact endpoint versions
+      description: Returns endpoint versions for the unofficial Genshin Impact API. It's main use case is to be used for autoupdating.
+      operationId: GIgetVersions
+      parameters:
+        - name: version
+          in: path
+          description: Endpoint version
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Request processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GIversions"
+        "400":
+          description: Invalid request | Various reasons
+        "404":
+          description: Requested content does not exist
+components:
+  #requestBodies:
+  #banPlayer:
+  #content:
+  #application/json:
+  #schema:
+  #$ref: "#/components/schemas/banPlayer"
+  #description: Ban a player
+  #equired: true
+  schemas:
+    GIbannerManifest:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: false
+        bannerNameFull:
+          type: string
+          nullable: false
+        bannerStartDate:
+          type: integer
+          format: int64
+          nullable: true
+        bannerEndDate:
+          type: integer
+          format: int64
+          nullable: true
+        bannerImage:
+          type: string
+          nullable: true
+        featured:
+          type: array
+          nullable: false
+        version:
+          type: string
+          nullable: false
+        drops:
+          type: object
+          nullable: false
+          properties:
+            rarity:
+              type: object
+              nullable: false
+              properties:
+                dropChance:
+                  type: number
+                  nullable: false
+                characters:
+                  type: array
+                  nullable: true
+                  items:
+                    type: object
+                    nullable: false
+                    properties:
+                      name:
+                        type: string
+                        nullable: false
+                      vision:
+                        type: string
+                        nullable: false
+                      rarity:
+                        type: number
+                        nullable: false
+                      increasedDropRate:
+                        type: boolean
+                        default: false
+                        nullable: false
+                      type:
+                        type: string
+                weapons:
+                  type: array
+                  nullable: true
+                  items:
+                    type: object
+                    nullable: false
+                    properties:
+                      name:
+                        type: string
+                        nullable: false
+                      weaponType:
+                        type: string
+                        nullable: false
+                      rarity:
+                        type: number
+                        nullable: false
+                      increasedDropRate:
+                        type: boolean
+                        default: false
+                        nullable: false
+                      type:
+                        type: string
+                dropsArray:
+                  type: array
+                  nullable: true
+                  items:
+                    type: object
+                    nullable: false
+                    properties:
+                      id:
+                        type: string
+                        nullable: false
+                      name:
+                        type: string
+                        nullable: false
+                      weaponType:
+                        type: string
+                        nullable: true
+                      vision:
+                        type: string
+                        nullable: true
+                      rarity:
+                        type: number
+                        nullable: false
+                      increasedDropRate:
+                        type: boolean
+                        default: false
+                        nullable: false
+                      type:
+                        type: string
+    GIbannersInfoManifest:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: false
+        version:
+          type: string
+          nullable: false
+        banners:
+          type: array
+          nullable: false
+          items:
+            type: object
+            nullable: false
+            properties:
+              id:
+                type: string
+                nullable: false
+              nameFull:
+                type: string
+                nullable: false
+              names:
+                type: array
+                nullable: false
+                items:
+                  type: string
+              startDate:
+                type: string
+                nullable: true
+              endDate:
+                type: string
+                nullable: true
+              image:
+                type: string
+                nullable: true
+              detailEndpoint:
+                type: string
+                nullable: false
+    GIversions:
+      type: object
+      properties:
+        versions:
+          type: array
+          nullable: false
+          items:
+            type: object
+            nullable: false
+            properties:
+              id:
+                type: string
+                nullable: false
+              version:
+                type: string
+                nullable: false
+              
