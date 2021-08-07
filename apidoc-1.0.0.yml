@@ -124,6 +124,9 @@ components:
         featured:
           type: array
           nullable: false
+          items:
+            type: string
+            nullable: false
         version:
           type: string
           nullable: false
